@@ -1,8 +1,19 @@
-from django.db import models
-
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.db import models
+
+
+class Student(models.Model):
+    student_id = models.CharField(max_length=10, null=False, primary_key=True)
+    student_name = models.CharField(max_length=20)
+    student_grade = models.IntegerField(null=False, default=1)
+    major = models.CharField(max_length=20, null=False)
+    enroll = models.BooleanField(default=True)
+    max_credit = models.IntegerField(null=False, default=18)
+
+    class Meta:
+        managed = False
+        db_table = "Student"
 
 
 class UserManager(BaseUserManager):
@@ -37,12 +48,7 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
-    student_id = models.CharField(
-        max_length=10,
-        null=False,
-        unique=True
-    )
-
+    student_id = models.ForeignKey('Student', on_delete=models.CASCADE, db_column='student_id', unique=True)
     logged_in = models.BooleanField(default=False)
 
     # user_id = models.CharField(
@@ -60,7 +66,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'student_id'
+
     # REQUIRED_FIELDS = ['user_id']
 
     class Meta:
-        db_table = "user"
+        db_table = "User"
