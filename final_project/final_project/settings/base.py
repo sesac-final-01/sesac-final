@@ -1,14 +1,31 @@
+import os
+import json
+
 from pathlib import Path
+from django.core.exceptions import ImproperlyConfigured
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
-# Quick-start development setti - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
+class Secrets:
+    def __init__(self, secret_file):
+        with open(secret_file) as f:
+            self.secrets = json.loads(f.read())
+
+    def get_secret(self, setting):
+        try:
+            return self.secrets.get(setting)
+        except:
+            error_msg = f'Set the {setting} environment variable'
+            raise ImproperlyConfigured(error_msg)
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-_@opzh@u!m3%_je%j!&bm=e(=3bk!z*jxp++eojaxl)#e=5_sn'
+secret_file = os.path.join(BASE_DIR, 'secrets.json')
+secrets = Secrets(secret_file)
+
+SECRET_KEY = secrets.get_secret("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

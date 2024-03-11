@@ -1,44 +1,37 @@
 from django.http import JsonResponse
+from rest_framework import status
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from .serializers import *
 from rest_framework.generics import *
 from django.contrib.auth.hashers import make_password, check_password
 from rest_framework.permissions import AllowAny
 from django.utils import timezone
+from .models import  Student
 
-class UserSignupView(CreateAPIView):
+
+class UserSignupView(APIView):
     permission_classes = [AllowAny]
-    serializer_class = UserCreateSerializer
 
     def post(self, request, *args, **kwargs):
         student_id = request.data['student_id']
         # user_id = request.data['user_id']
         password = request.data['password']
 
-        # print(f"student_id={student_id}, user_id={user_id}, password={password}")
-        print(f"student_id={student_id}, password={password}")
+        try:
+            user = User.objects.get(student_id__student_id=student_id)
+            return JsonResponse({"status": status.HTTP_208_ALREADY_REPORTED, "message":"해당 학번의 사용자가 이미 존재합니다."})
 
-        user_data = {
-            'student_id': student_id,
-            # 'user_id': user_id,
-            'password': make_password(password)
-        }
-
-        serializer = self.serializer_class(data=user_data)
-
-        if serializer.is_valid(raise_exception=False):
-            user = serializer.create(user_data)
-            return JsonResponse({"user_num": user.pk, "message": f"student_id - {student_id} user_create success"})
-        else:
-            print(serializer.errors)
-            return Response('user_create failed')
+        except User.DoesNotExist:
+            user = User.objects.create(
+                student_id=Student.objects.get(student_id=student_id),
+                password=make_password(password)
+            )
+            return JsonResponse({"status": status.HTTP_201_CREATED, "message":"회원가입에 성공했습니다. 로그인 페이지로 이동합니다."})
 
 
-class UserSigninView(GenericAPIView):
-    permission_classes = [AllowAny]
-    serializer_class = SignInSerializer
-
+class UserSigninView(APIView):
     def post(self, request):
         req_student_id = request.data['student_id']
         req_password = request.data['password']
@@ -51,21 +44,20 @@ class UserSigninView(GenericAPIView):
                 user.last_login = timezone.now()
                 user.logged_in = True
                 user.save()
-                return Response(f"student_id={req_student_id} signin success")
+                return JsonResponse({"status":status.HTTP_200_OK})
             else:
-                return Response(f"wrong password")
+                return JsonResponse({"status":status.HTTP_104_WRONG_PWD})
 
         except User.DoesNotExist:
-            return Response(f"student_id={req_student_id} user doesn't exist")
+            return JsonResponse({"status":status.HTTP_204_NO_CONTENT})
 
 
-class UserSignoutView(GenericAPIView):
+class UserSignoutView(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request):
         signout_student_id = request.GET.get('student_id')
         # signout_student_id = request.data['student_id']
-        print(f"signout_sid={signout_student_id}")
         user = User.objects.get(student_id=signout_student_id)
 
         if user.logged_in:

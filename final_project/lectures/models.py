@@ -27,15 +27,6 @@ class Lecture(models.Model):
         db_table = 'Lecture'
 
 
-class MyLectures(models.Model):
-    student_id = models.ForeignKey('accounts.Student', on_delete=models.CASCADE, db_column='student_id')
-    lec_id = models.ForeignKey('Lecture', on_delete=models.RESTRICT, db_column='lec_id')
-    is_active = models.BooleanField(default=True)
-
-    class Meta:
-        db_table = "MyLectures"
-
-
 class LectureStudents(models.Model):
     lec_id = models.ForeignKey('Lecture', on_delete=models.RESTRICT, db_column='lec_id')
     student_id = models.ForeignKey('accounts.Student', on_delete=models.CASCADE, db_column='student_id')

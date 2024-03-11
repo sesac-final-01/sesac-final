@@ -79,6 +79,21 @@
             background-color: #45a049;
         }
 
+        #lecture-list-button {
+            width: 100%;
+            padding: 10px 20px;
+            background-color: lightgrey;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px; /* 버튼과 위의 간격을 설정합니다. */
+        }
+
+        #lecture-list-button:hover {
+            background-color: #45a049;
+        }
+
         .modal {
             position: fixed;
             top: 50%;
@@ -135,6 +150,7 @@
             <p>수강 가능 학점: <span id="max_credit"></span></p>
             <p>신청 학점: <span id="applied_credit"></span></p>
         </div>
+        <button id="lecture-list-button" onclick="goToLectureList()">강의 목록으로 돌아가기</button>
     </div>
 
     <div class="lecture-info">
@@ -161,6 +177,10 @@
 </div>
 
 <script src="../lectures/static/lectures/js/my_lectures.js"></script>
-
+<script>
+    function goToLectureList() {
+        window.location.href = "lecture_list.html?student_id=" + studentId;
+    }
+</script>
 </body>
 </html>

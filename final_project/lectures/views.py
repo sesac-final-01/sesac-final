@@ -1,6 +1,6 @@
 from rest_framework.views import APIView
 
-from .models import Lecture, MyLectures, LectureStudents, Professor
+from .models import Lecture, LectureStudents, Professor
 from accounts.models import Student
 
 from .serializers import LectureListSerializer, StudentInfoSerializer
@@ -138,7 +138,6 @@ class LectureApplyView(APIView):
     def post(self, request, *args, **kwargs):
         request_code = request.data['lec_id']
 
-        # TODO 로그인 시 토큰 발급해 해당 토큰을 통해 student_id 받아올 수 있도록 수정 ; User 생성 시 student_id를 이용한 토큰 발급 必
         student_id = request.data['student_id']
 
         # with connection.cursor() as cursor:
@@ -176,13 +175,17 @@ class LectureApplyView(APIView):
                 if applied_students_count + 1 <= lec_quota:  # 수강 정원을 초과하지 않은 경우
                     if lec_schedule not in applied_schedule:  # 시간표 중복 여부 확인 - 수강 신청 내역 목록과 비교 必
                         if (applied_credit + credit) <= max_credit:  # 수강 가능 학점 초과 여부 확인
-                            LectureStudents.objects.create(
-                                # TODO 기존에 신청했다가 취소한 과목 재신청 시  0->1로 바뀌기만 한것들 체크해서 다시 0으로 바꿔주기
-                                lec_id=Lecture.objects.get(lec_id=request_code),
-                                student_id=Student.objects.get(student_id=student_id))
-                            #  TODO 학생 신청 학점 수 증가 必
-
-                            return JsonResponse({"applied_credit": applied_credit+credit, "message":"수강신청 성공"})
+                            try:
+                                lecture_student = LectureStudents.objects.get(lec_id=request_code,student_id=student_id)
+                                lecture_student.canceled = 0
+                                lecture_student.save()
+                                return JsonResponse({"applied_credit": applied_credit + credit, "message": "수강신청 성공"})
+                            except LectureStudents.DoesNotExist:
+                                LectureStudents.objects.create(
+                                    # TODO 기존에 신청했다가 취소한 과목 재신청 시  0->1로 바뀌기만 한것들 체크해서 다시 0으로 바꿔주기
+                                    lec_id=Lecture.objects.get(lec_id=request_code),
+                                    student_id=Student.objects.get(student_id=student_id))
+                                return JsonResponse({"applied_credit": applied_credit+credit, "message":"수강신청 성공"})
                         else:
                             return JsonResponse({"applied_credit": applied_credit, "message": "수강 가능 학점을 초과했습니다"})
                     else:

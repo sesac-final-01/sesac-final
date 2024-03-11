@@ -1,9 +1,10 @@
-// path('lists/', views.LectureListGetView.as_view(), name='lecture-list'),
-//     path('lists/search/', views.LectureSearchView.as_view(), name='search-lecture'),
-//     path('apply/', views.LectureApplyView.as_view(), name='lecture-apply'),
-//     path('my-lectures/', views.MyLectureRetrieveView.as_view(), name='my-lectures'),
+// URL에서 쿼리 매개변수를 추출
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+const studentId = urlParams.get('student_id');
 
-fetch("http://localhost:8000/lectures/lists?student_id=20240101")
+
+fetch(`http://localhost:8000/lectures/lists?student_id=${studentId}`)
     .then(response => response.json())
     .then(data => {
         console.log('학생 정보:', data.student);
@@ -23,7 +24,7 @@ fetch("http://localhost:8000/lectures/lists?student_id=20240101")
     })
 
 function searchLectures() {
-    const studentId = document.getElementById('student-id').textContent;
+    // const studentId = document.getElementById('student-id').textContent;
     const lectureName = document.getElementById('lecture-name-input').value;
     const lectureCode = document.getElementById('lecture-code-input').value;
 
@@ -80,7 +81,7 @@ function handleResponse(response) {
 function applyForLecture(event) {
     // 클릭된 버튼의 부모 노드(tr 요소)를 찾습니다.
     const row = event.target.closest('tr');
-    const studentId = document.getElementById('student-id').textContent;
+    // const studentId = document.getElementById('student-id').textContent;
     const lectureCode = row.querySelector('td:first-child').textContent;
     const url = `http://localhost:8000/lectures/apply/`;
 
