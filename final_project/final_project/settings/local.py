@@ -18,6 +18,6 @@ DATABASES = {
 }
 
 # ASGI application
-ASGI_APPLICATION = 'config.asgi.local.application'
-# WSGI application
-WSGI_APPLICATION = 'config.wsgi.local.application'
+# ASGI_APPLICATION = 'config.asgi.local.application'
+# # WSGI application
+# WSGI_APPLICATION = 'config.wsgi.local.application'
