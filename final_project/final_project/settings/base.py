@@ -9,23 +9,24 @@ from django.core.exceptions import ImproperlyConfigured
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
-class Secrets:
-    def __init__(self, secret_file):
-        with open(secret_file) as f:
-            self.secrets = json.loads(f.read())
-
-    def get_secret(self, setting):
-        try:
-            return self.secrets.get(setting)
-        except:
-            error_msg = f'Set the {setting} environment variable'
-            raise ImproperlyConfigured(error_msg)
-
-# SECURITY WARNING: keep the secret key used in production secret!
-secret_file = os.path.join(BASE_DIR, 'secrets.json')
-secrets = Secrets(secret_file)
-
-SECRET_KEY = secrets.get_secret("SECRET_KEY")
+# class Secrets:
+#     def __init__(self, secret_file):
+#         with open(secret_file) as f:
+#             self.secrets = json.loads(f.read())
+#
+#     def get_secret(self, setting):
+#         try:
+#             return self.secrets.get(setting)
+#         except:
+#             error_msg = f'Set the {setting} environment variable'
+#             raise ImproperlyConfigured(error_msg)
+#
+# # SECURITY WARNING: keep the secret key used in production secret!
+# secret_file = os.path.join(BASE_DIR, 'secrets.json')
+# secrets = Secrets(secret_file)
+#
+# SECRET_KEY = secrets.get_secret("SECRET_KEY")
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -44,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'corsheaders',
+    'rest_framework',
 
     # apps
     'accounts',
@@ -82,18 +84,10 @@ TEMPLATES = [
     },
 ]
 
+# # ASGI application
+ASGI_APPLICATION = 'final_project.asgi.application'
+# WSGI application
 WSGI_APPLICATION = 'final_project.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
 
 DATABASES = {
     'default': {
