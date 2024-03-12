@@ -4,7 +4,7 @@ const urlParams = new URLSearchParams(queryString);
 const studentId = urlParams.get('student_id');
 
 
-fetch(`https://api.sugangwhatever.shop:8000/lectures/my-lectures?student_id=${studentId}`)
+fetch(`http://127.0.0.1:8000/lectures/my-lectures?student_id=${studentId}`)
     .then(response => response.json())
     .then(data => {
         console.log('학생 정보:', data.student);
@@ -55,7 +55,7 @@ function cancelLecture(event) {
     // const studentId = document.getElementById('student-id').textContent;
     const lectureCode = row.querySelector('td:first-child').textContent;
     const lectureName = row.querySelector('td:nth-child(2)').textContent;
-    const url = `https://api.sugangwhatever.shop:8000/lectures/cancel/`;
+    const url = `http://127.0.0.1:8000/lectures/cancel/`;
 
     console.log("cancelLecture")
 

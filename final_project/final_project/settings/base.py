@@ -47,6 +47,9 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
 
+    # https
+    'sslserver',
+
     # apps
     'accounts',
     'lectures',
