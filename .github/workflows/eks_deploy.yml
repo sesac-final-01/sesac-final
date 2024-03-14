@@ -2,6 +2,13 @@ name: Deploy to EKS
 
 on:
   push:
+    paths:
+      - "final_project/accounts/**"
+      - "final_project/final_proejct/**"
+      - "final_project/lectures/**"
+      - "final_project/Docerfile"
+      - "final_project/manage.py"
+      - "final_project/requirements.txt"
     branches:
       - main  # 배포할 브랜치
 
@@ -12,14 +19,16 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
-        with:
-          # 특정 경로를 제외하여 checkout합니다.
-          fetch-depth: 0
-          # 변경 사항을 포착할 때 특정 경로를 제외합니다.
-          paths-ignore:
-            - 'final_project/templates/**'
-            - 'final_project/templates_local/**'
-            - '.gitignore'
+
+      # .env 파일 생성
+      - name: Create .env file
+        run:
+          echo "DJANGO_SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}" > final_project/.env
+          echo "DB_HOST=${{ secrets.DB_HOST }}" >> final_project/.env
+          echo "DB_NAME=${{ secrets.DB_NAME }}" >> final_project/.env
+          echo "DB_USER=${{ secrets.DB_USER }}" >> final_project/.env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> final_project/.env
+          echo "DB_PORT=${{ secrets.DB_PORT }}" >> final_project/.env
       
       # Docker 이미지 빌드
       - name: Build Docker Image
