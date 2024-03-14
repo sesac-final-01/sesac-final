@@ -43,6 +43,7 @@ jobs:
       - name: Configure Kubernetes
         run: aws eks --region ap-northeast-2 update-kubeconfig --name sesac-eks-cls
 
+    # aws configure
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
