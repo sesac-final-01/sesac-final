@@ -3,12 +3,7 @@ name: Deploy to EKS
 on:
   push:
     paths:
-      - "final_project/accounts/**"
-      - "final_project/final_proejct/**"
-      - "final_project/lectures/**"
-      - "final_project/Docerfile"
-      - "final_project/manage.py"
-      - "final_project/requirements.txt"
+      - "final_project/**"
     branches:
       - main  # 배포할 브랜치
 
