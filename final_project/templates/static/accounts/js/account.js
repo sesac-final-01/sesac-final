@@ -2,7 +2,7 @@ function account_signup(event) {
     const studentId = document.getElementById("student-id").value;
     const password = document.getElementById("password").value;
 
-    fetch("https://k8s-default-sesacalb-3d8710ab4e-27414001.ap-northeast-2.elb.amazonaws.com/accounts/signup/", {
+    fetch("http://k8s-default-sesacalb-3d8710ab4e-27414001.ap-northeast-2.elb.amazonaws.com/accounts/signup/", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -36,7 +36,7 @@ function account_signin() {
     const password = document.getElementById("password").value;
 
     // 로그인 API에 POST 요청을 보냅니다.
-    fetch("https://k8s-default-sesacalb-3d8710ab4e-27414001.ap-northeast-2.elb.amazonaws.com/accounts/signin/", {
+    fetch("http://k8s-default-sesacalb-3d8710ab4e-27414001.ap-northeast-2.elb.amazonaws.com/accounts/signin/", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
