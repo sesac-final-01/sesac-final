@@ -28,10 +28,6 @@ jobs:
       # Docker 이미지 빌드
       - name: Build Docker Image
         run:
-          previous_version=$(docker image inspect jiwooum/sugangsite --format "{{.ContainerConfig.Labels.version}}")
-          version_number=$(echo $previous_version | grep -o '[0-9.]*$')
-          new_version=$(echo "$version_number + 1" | bc)
-          docker build -t jiwooum/sugangsite:"v$new_version" .
           docker build -t jiwooum/sugangsite:latest .
       
       # Docker Hub 로그인
@@ -40,8 +36,7 @@ jobs:
       
       # Docker 이미지를 Docker Hub로 push
       - name: Push Docker Image to Docker Hub
-        run: 
-          docker push jiwooum/sugangsite:"v$new_version"
+        run:
           docker push jiwooum/sugangsite:latest
       
       # Kubernetes 구성 설정
