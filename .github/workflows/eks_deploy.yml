@@ -1,0 +1,49 @@
+name: Deploy to EKS
+
+on:
+  push:
+    branches:
+      - main  # 배포할 브랜치
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+        with:
+          # 특정 경로를 제외하여 checkout합니다.
+          fetch-depth: 0
+          # 변경 사항을 포착할 때 특정 경로를 제외합니다.
+          paths-ignore:
+            - 'final_project/templates/**'
+            - 'final_project/templates_local/**'
+            - '.gitignore'
+      
+      # Docker 이미지 빌드
+      - name: Build Docker Image
+        run:
+          previous_version=$(docker image inspect jiwooum/sugangsite --format "{{.ContainerConfig.Labels.version}}")
+          version_number=$(echo $previous_version | grep -o '[0-9.]*$')
+          new_version=$(echo "$version_number + 1" | bc)
+          docker build -t jiwooum/sugangsite:"v$new_version" .
+          docker build -t jiwooum/sugangsite:latest .
+      
+      # Docker Hub 로그인
+      - name: Login to Docker Hub
+        run: docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
+      
+      # Docker 이미지를 Docker Hub로 push
+      - name: Push Docker Image to Docker Hub
+        run: 
+          docker push jiwooum/sugangsite:"v$new_version"
+          docker push jiwooum/sugangsite:latest
+      
+      # Kubernetes 구성 설정
+      - name: Configure Kubernetes
+        run: aws eks --region ap-northeast-2 update-kubeconfig --name sesac-eks-cls
+      
+      # Kubernetes에 배포
+      - name: Deploy to Kubernetes
+        run: kubectl apply -f alb-jiwoo.yaml
