@@ -22,4 +22,4 @@ jobs:
 
       - name: Upload Templates to S3 Bucket
         run: |
-          aws s3 cp --recursive final_project/templates/ s3://sugang-bucket
+          aws s3 cp --recursive --acl public-read final_project/templates/ s3://sugang-bucket
