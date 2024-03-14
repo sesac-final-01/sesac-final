@@ -28,7 +28,7 @@ jobs:
       # Docker 이미지 빌드
       - name: Build Docker Image
         run:
-          docker build -t jiwooum/sugangsite:latest ./final_project/Dockerfile
+          docker build -t jiwooum/sugangsite:latest ./final_project/Dockerfile .
       
       # Docker Hub 로그인
       - name: Login to Docker Hub
