@@ -35,8 +35,8 @@ jobs:
 
     - name: Run database migrations
       run: |
-        python ./final_project/manage.py makemigrations --settings=final_project.settings.prod
-        python ./final_project/manage.py migrate --settings=final_project.settings.prod
+        python ./final_project/manage.py makemigrations --settings=.final_project.settings.prod
+        python ./final_project/manage.py migrate --settings=.final_project.settings.prod
 
     - name: Run tests
       run: |
