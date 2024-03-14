@@ -44,12 +44,12 @@ class UserSigninView(APIView):
                 user.last_login = timezone.now()
                 user.logged_in = True
                 user.save()
-                return JsonResponse({"status":status.HTTP_200_OK})
+                return JsonResponse({"status":status.HTTP_200_OK, "message":"로그인 성공"})
             else:
-                return JsonResponse({"status":status.HTTP_104_WRONG_PWD})
+                return JsonResponse({"status":status.HTTP_406_NOT_ACCEPTABLE,"message":"로그인 실패-비밀번호를 다시 입력해주세요."})
 
         except User.DoesNotExist:
-            return JsonResponse({"status":status.HTTP_204_NO_CONTENT})
+            return JsonResponse({"status":status.HTTP_204_NO_CONTENT, "message":"해당 학번의 사용자가 존재하지 않습니다."})
 
 
 class UserSignoutView(APIView):

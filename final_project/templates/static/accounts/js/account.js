@@ -2,7 +2,7 @@ function account_signup(event) {
     const studentId = document.getElementById("student-id").value;
     const password = document.getElementById("password").value;
 
-    fetch("https://api.sugangwhatever.shop:8000/accounts/signup/", {
+    fetch("https://k8s-default-sesacalb-3d8710ab4e-27414001.ap-northeast-2.elb.amazonaws.com/accounts/signup/", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -21,6 +21,7 @@ function account_signup(event) {
                 console.log("회원가입 실패", data.status);
                 document.getElementById("student-id").value = "";
                 document.getElementById("password").value = "";
+
             }
 
         })
@@ -35,7 +36,7 @@ function account_signin() {
     const password = document.getElementById("password").value;
 
     // 로그인 API에 POST 요청을 보냅니다.
-    fetch("https://api.sugangwhatever.shop:8000/accounts/signin/", {
+    fetch("https://k8s-default-sesacalb-3d8710ab4e-27414001.ap-northeast-2.elb.amazonaws.com/accounts/signin/", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -50,6 +51,7 @@ function account_signin() {
             console.log(data)
             if (data.status === 200) {
                 console.log("로그인 성공");
+                // TODO 로그인 실패 코드 재정비, 모달 띄우기
                 window.location.href = "lecture_list.html?student_id=" + studentId;
             } else if(data.status === 104) {
                 console.log("로그인 실패 - 비밀번호를 다시 입력해주세요.",);

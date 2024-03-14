@@ -1,3 +1,27 @@
+function displayPopup(message) {
+    const modal = document.createElement('div');
+    modal.classList.add('modal');
+
+    const messageElement = document.createElement('div');
+    messageElement.textContent = message;
+
+    modal.appendChild(messageElement);
+
+    document.body.appendChild(modal);
+
+    const closeButton = document.createElement('button');
+    closeButton.textContent = '닫기';
+    closeButton.addEventListener('click', () => {
+        modal.remove();
+    });
+
+    modal.appendChild(closeButton);
+}
+
+function handleResponse(response) {
+    displayPopup(response);
+}
+
 function account_signup(event) {
     const studentId = document.getElementById("student-id").value;
     const password = document.getElementById("password").value;
@@ -21,6 +45,7 @@ function account_signup(event) {
                 console.log("회원가입 실패", data.status);
                 document.getElementById("student-id").value = "";
                 document.getElementById("password").value = "";
+                handleResponse(data.message);
             }
 
         })
@@ -51,10 +76,12 @@ function account_signin() {
             if (data.status === 200) {
                 console.log("로그인 성공");
                 window.location.href = "lecture_list.html?student_id=" + studentId;
-            } else if(data.status === 104) {
+            } else if(data.status === 406) {
                 console.log("로그인 실패 - 비밀번호를 다시 입력해주세요.",);
+                handleResponse(data.message)
             } else{
                 console.log("로그인 실패 - 해당 학번의 사용자가 존재하지 않습니다.")
+                handleResponse(data.message)
             }
 
         })
