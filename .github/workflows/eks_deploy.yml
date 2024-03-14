@@ -2,6 +2,8 @@ name: Deploy to EKS
 
 on:
   push:
+    paths:
+      - "final_project/**"
     branches:
       - main  # 배포할 브랜치
 
@@ -51,4 +53,4 @@ jobs:
 
       # Kubernetes에 배포
       - name: Deploy to Kubernetes
-        run: kubectl apply -f /root/k8s/pod/alb.yaml
+        run: kubectl apply -f /root/k8s/pod/alb-jiwoo.yaml
