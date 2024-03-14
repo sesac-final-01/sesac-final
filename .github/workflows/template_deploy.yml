@@ -1,0 +1,25 @@
+name: Deploy to AWS S3
+
+on:
+  push:
+    paths:
+      - 'final_project/templates/**'  # templates 디렉토리 변경 시 배포
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      - name: Upload Templates to S3 Bucket
+        run: |
+          aws s3 cp --recursive final_project/templates/ s3://sugang-bucket
