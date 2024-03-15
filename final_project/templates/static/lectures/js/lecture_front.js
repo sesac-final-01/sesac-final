@@ -5,7 +5,6 @@ const studentId = urlParams.get('student_id');
 
 
 fetch(`https://k8s-default-sesacalb-3d8710ab4e-27414001.ap-northeast-2.elb.amazonaws.com/lectures/lists?student_id=${studentId}`)
-// fetch(`https://api.sugangwhatever.shop:8000/lectures/lists?student_id=${studentId}`)
     .then(response => response.json())
     .then(data => {
         console.log('학생 정보:', data.student);
@@ -86,7 +85,7 @@ function applyForLecture(event) {
     // const studentId = document.getElementById('student-id').textContent;
     const lectureCode = row.querySelector('td:first-child').textContent;
     const url = `https://k8s-default-sesacalb-3d8710ab4e-27414001.ap-northeast-2.elb.amazonaws.com/lectures/apply/`;
-    // const url = `https://api.sugangwhatever.shop:8000/lectures/apply/`;
+    // const url = `https://api.sugangwhatever.shop:8000/lectures/apply                /`;
 
     // POST 요청을 보냅니다.
     fetch(url, {

@@ -5,7 +5,6 @@ const studentId = urlParams.get('student_id');
 
 
 fetch(`https://k8s-default-sesacalb-3d8710ab4e-27414001.ap-northeast-2.elb.amazonaws.com/lectures/my-lectures?student_id=${studentId}`)
-// fetch(`https://api.sugangwhatever.shop:8000/lectures/my-lectures?student_id=${studentId}`)
     .then(response => response.json())
     .then(data => {
         console.log('학생 정보:', data.student);
