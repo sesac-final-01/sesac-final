@@ -25,6 +25,7 @@ class UserSignupView(APIView):
 
         except User.DoesNotExist:
             user = User.objects.create(
+                # TODO  없는 학생인 경우 고려
                 student_id=Student.objects.get(student_id=student_id),
                 password=make_password(password)
             )

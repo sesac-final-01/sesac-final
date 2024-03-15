@@ -169,7 +169,7 @@ class LectureApplyView(APIView):
         enroll = student['enroll']
         max_credit = student['max_credit']
 
-        applied_students_count = LectureStudents.objects.filter(lec_id=request_code).count()
+        applied_students_count = LectureStudents.objects.filter(lec_id=request_code, canceled=0).count()
 
         my_lecs_id = LectureStudents.objects.filter(student_id=student_id, canceled=0).values_list('lec_id', flat=True)
 
