@@ -30,17 +30,12 @@ jobs:
           echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
           echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
 
-      - name: List files in current directory
-        run: |
-          ls -al final_project/
-          cat final_project/.env
-          pwd
-
       # Docker 이미지 빌드
       - name: Build Docker Image
         run: |
           cd final_project
           pwd
+          ls -al
           docker build -t jiwooum/sugangsite:latest  .
 
       # Docker Hub 로그인
@@ -66,4 +61,6 @@ jobs:
 
       # Kubernetes에 배포
       - name: Deploy to Kubernetes
-        run: kubectl apply -f final_project/alb.yaml --validate=false
+        run: |
+          ls -al
+          kubectl apply -f final_project/alb.yaml --validate=false
