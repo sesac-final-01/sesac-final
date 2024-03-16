@@ -20,19 +20,20 @@ jobs:
 
       # .env 파일 생성
       - name: Create .env file
-        run:
+        run: |
           echo "DJANGO_SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}" > final_project/.env
           echo "DB_HOST=${{ secrets.DB_HOST }}" >> final_project/.env
           echo "DB_NAME=${{ secrets.DB_NAME }}" >> final_project/.env
           echo "DB_USER=${{ secrets.DB_USER }}" >> final_project/.env
           echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> final_project/.env
           echo "DB_PORT=${{ secrets.DB_PORT }}" >> final_project/.env
-          ls
+
+      - name: List files in current directory
+        run: ls
 
       # Docker 이미지 빌드
       - name: Build Docker Image
-        run:
-          docker build -t jiwooum/sugangsite:latest -f final_project/Dockerfile .
+        run: docker build -t jiwooum/sugangsite:latest -f final_project/Dockerfile .
 
       # Docker Hub 로그인
       - name: Login to Docker Hub
@@ -40,8 +41,7 @@ jobs:
 
       # Docker 이미지를 Docker Hub로 push
       - name: Push Docker Image to Docker Hub
-        run:
-          docker push jiwooum/sugangsite:latest
+        run: docker push jiwooum/sugangsite:latest
 
     # aws configure
       - name: Configure AWS Credentials
