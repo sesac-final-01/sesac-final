@@ -44,4 +44,4 @@ jobs:
 
     - name: Run tests
       run: |
-        python ./manage.py test runserver 0.0.0.0:8000 --settings=final_project.settings.prod
+        python final_project/manage.py test runserver 0.0.0.0:8000 --settings=final_project.settings.prod
