@@ -37,6 +37,13 @@ jobs:
         echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> final_project/.env
         echo "DB_PORT=${{ secrets.DB_PORT }}" >> final_project/.env
 
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ap-northeast-2
+
     - name: Run database migrations
       run: |
         python final_project/manage.py makemigrations --settings=final_project.settings.prod
@@ -44,4 +51,4 @@ jobs:
 
     - name: Run tests
       run: |
-        python final_project/manage.py test --settings=final_project.settings.prod
+        python final_project/manage.py test runserver 0.0.0.0:8000 --settings=final_project.settings.prod
