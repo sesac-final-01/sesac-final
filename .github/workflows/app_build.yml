@@ -28,6 +28,11 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r final_project/requirements.txt
 
+    - name: Set up MySQL
+      uses: einaregilsson/setup-mysql@v1
+      with:
+        mysql-version: '8.0'
+        server-options: --bind-address=127.0.0.1
 
     - name: Run database migrations
       run: |
