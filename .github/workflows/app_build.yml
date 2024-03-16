@@ -29,10 +29,10 @@ jobs:
         pip install -r final_project/requirements.txt
 
     - name: Set up MySQL
-      uses: einaregilsson/setup-mysql@v1
-      with:
-        mysql-version: '8.0'
-        server-options: --bind-address=127.0.0.1
+      run: |
+        sudo apt-get update
+        sudo apt-get install mysql-server -y
+        sudo mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '1234'; FLUSH PRIVILEGES;"
 
     - name: Run database migrations
       run: |
