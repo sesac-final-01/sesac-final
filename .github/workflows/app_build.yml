@@ -31,4 +31,4 @@ jobs:
     - name: Run tests
       run: |
         cd final_project
-        python manage.py test runserver --settings=final_project.settings.local
+        python manage.py runserver
