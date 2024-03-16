@@ -26,5 +26,3 @@ CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000", "--settings=final_proj
 
 # 컨테이너가 사용할 포트 노출
 EXPOSE 8000
-
-# CI/CD test

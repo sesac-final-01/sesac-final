@@ -60,7 +60,6 @@ jobs:
       - name: Configure Kubernetes
         run: |
           aws eks --region ap-northeast-2 update-kubeconfig --name sesac-eks-cls
-          mkdir ~/.kube
           cp kubeconfig.yaml ~/.kube/config
 
       # Kubernetes에 배포
