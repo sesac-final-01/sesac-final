@@ -27,6 +27,7 @@ jobs:
           echo "DB_USER=${{ secrets.DB_USER }}" >> final_project/.env
           echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> final_project/.env
           echo "DB_PORT=${{ secrets.DB_PORT }}" >> final_project/.env
+          ls
 
       # Docker 이미지 빌드
       - name: Build Docker Image
