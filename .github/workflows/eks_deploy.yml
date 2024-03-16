@@ -2,10 +2,12 @@ name: Deploy to EKS
 
 on:
   push:
+    branches:
+      - main
     paths:
       - 'final_project/**'
-    paths-ignore:
-      - 'final_project/templates/**'
+      - '!final_project/templates/**'
+      - '!final_project/templates_local/**'
 
 jobs:
   deploy:

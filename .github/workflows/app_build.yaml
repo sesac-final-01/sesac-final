@@ -2,10 +2,12 @@ name: Django CI
 
 on:
   push:
+    branches:
+      - main
     paths:
       - 'final_project/**'
-    paths-ignore:
-      - 'final_project/templates/**'
+      - '!final_project/templates/**'
+      - '!final_project/templates_local/**'
 
 jobs:
   build:
@@ -18,7 +20,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: 3.10
+        python-version: 3.10.6
 
     - name: Install dependencies
       run: |
@@ -42,4 +44,4 @@ jobs:
 
     - name: Run tests
       run: |
-        python final_project/manage.py test runserver 0.0.0.0:8000 --settings=final_project.settings.prod
+        python final_project/manage.py test --settings=final_project.settings.prod
