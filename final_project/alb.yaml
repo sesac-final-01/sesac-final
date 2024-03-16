@@ -1,0 +1,86 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: efs-claim
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: efs-sc
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: project-app
+  labels:
+    app: sesac
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: sesac
+  template:
+    metadata:
+      labels:
+        app: sesac
+    spec:
+      containers:
+        - name: project
+          image: jiwooum/sugangsite:latest
+          ports:
+            - containerPort: 8000
+          volumeMounts:
+            - name: app
+              mountPath: /data
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 500m
+              memory: 512Mi
+
+      volumes:
+        - name: app
+          persistentVolumeClaim:
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sesac-alb
+spec:
+  selector:
+    app: sesac
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8000
+      protocol: TCP
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sesac-alb-ingress
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-northeast-2:992382609945:certificate/a3ec320e-36c0-40fa-b16a-ed00d8930945
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
+spec:
+  ingressClassName: alb
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: sesac-alb
+                port:
+                  number: 80

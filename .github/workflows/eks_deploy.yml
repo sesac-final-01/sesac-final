@@ -55,5 +55,4 @@ jobs:
 
       # Kubernetes에 배포
       - name: Deploy to Kubernetes
-        run: |
-          sudo kubectl apply -f /root/k8s/pod/alb.yaml
+        run: kubectl apply -f final_project/alb.yaml
