@@ -2,7 +2,7 @@ function account_signup(event) {
     const studentId = document.getElementById("student-id").value;
     const password = document.getElementById("password").value;
 
-    fetch("https://univ.sugangwhatever.shop:8000/accounts/signup/", {
+    fetch("https://univ.sugangwhatever.shop/accounts/signup/", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -36,7 +36,7 @@ function account_signin() {
     const password = document.getElementById("password").value;
 
     // 로그인 API에 POST 요청을 보냅니다.
-    fetch("https://univ.sugangwhatever.shop:8000/accounts/signin/", {
+    fetch("https://univ.sugangwhatever.shop/accounts/signin/", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"

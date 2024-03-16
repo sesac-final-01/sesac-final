@@ -4,8 +4,9 @@ on:
   push:
     paths:
       - "final_project/**"
-    branches:
-      - main  # 배포할 브랜치
+    paths-ignore:
+      - "final_project/templates/**"
+      - "final_project/templates_local/**"
 
 jobs:
   deploy:
