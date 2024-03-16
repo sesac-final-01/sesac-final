@@ -69,17 +69,6 @@ ASGI_APPLICATION = 'final_project.asgi.application'
 # WSGI application
 WSGI_APPLICATION = 'final_project.wsgi.application'
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'sesac_final',
-        'USER': 'root',
-        'PASSWORD': '1234',
-        'HOST': '127.0.0.1',
-        'PORT': 3306
-    }
-}
-
 AUTH_USER_MODEL = 'accounts.User'
 
 # Password validation
