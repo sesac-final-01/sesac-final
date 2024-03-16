@@ -58,8 +58,11 @@ jobs:
 
       # Kubernetes 구성 설정
       - name: Configure Kubernetes
-        run: aws eks --region ap-northeast-2 update-kubeconfig --name sesac-eks-cls
+        run: |
+          aws eks --region ap-northeast-2 update-kubeconfig --name sesac-eks-cls
+          mkdir ~/.kube
+          cp kubeconfig.yaml ~/.kube/config
 
       # Kubernetes에 배포
       - name: Deploy to Kubernetes
-        run: sudo kubectl apply -f final_project/alb.yaml
+        run: kubectl apply -f final_project/alb.yaml
