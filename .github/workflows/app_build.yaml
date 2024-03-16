@@ -3,9 +3,9 @@ name: Django CI
 on:
   push:
     paths:
-      - "final_project/**"
+      - 'final_project/**'
     paths-ignore:
-      - "final_project/templates/**"
+      - 'final_project/templates/**'
 
 jobs:
   build:
