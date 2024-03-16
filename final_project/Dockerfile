@@ -18,8 +18,6 @@ RUN python3 -m pip install --upgrade pip setuptools && \
     python3 -m pip install --no-cache-dir -r requirements.txt
 
 
-# certbot 활용 ssl 적용
-
 # 소스 코드 복사
 COPY . .
 
