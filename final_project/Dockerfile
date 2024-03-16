@@ -19,7 +19,7 @@ RUN python3 -m pip install --upgrade pip setuptools && \
 
 
 # 소스 코드 복사
-COPY final_project/* .
+COPY ./* .
 
 # 컨테이너에서 실행할 명령 설정
 CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000", "--settings=final_project.settings.prod"]
