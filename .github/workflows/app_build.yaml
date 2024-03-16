@@ -31,17 +31,17 @@ jobs:
     # .env 파일 생성
     - name: Create .env file
       run:
-        echo "DJANGO_SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}" > ./.env
-        echo "DB_HOST=${{ secrets.DB_HOST }}" >> ./.env
-        echo "DB_NAME=${{ secrets.DB_NAME }}" >> ./.env
-        echo "DB_USER=${{ secrets.DB_USER }}" >> ./.env
-        echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" ./.env
-        echo "DB_PORT=${{ secrets.DB_PORT }}" >> ./.env
+        echo "DJANGO_SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}" > final_project/.env
+        echo "DB_HOST=${{ secrets.DB_HOST }}" >> final_project/.env
+        echo "DB_NAME=${{ secrets.DB_NAME }}" >> final_project/.env
+        echo "DB_USER=${{ secrets.DB_USER }}" >> final_project/.env
+        echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" final_project/.env
+        echo "DB_PORT=${{ secrets.DB_PORT }}" >> final_project/.env
 
     - name: Run database migrations
       run: |
-        python ./manage.py makemigrations --settings=final_project.settings.prod
-        python ./manage.py migrate --settings=final_project.settings.prod
+        python final_project/manage.py makemigrations --settings=final_project.settings.prod
+        python final_project/manage.py migrate --settings=final_project.settings.prod
 
     - name: Run tests
       run: |
