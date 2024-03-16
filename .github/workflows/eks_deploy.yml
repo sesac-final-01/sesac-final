@@ -6,7 +6,6 @@ on:
       - "final_project/**"
     paths-ignore:
       - "final_project/templates/**"
-      - "final_project/templates_local/**"
 
 jobs:
   deploy:
@@ -54,4 +53,6 @@ jobs:
 
       # Kubernetes에 배포
       - name: Deploy to Kubernetes
-        run: kubectl apply -f /root/k8s/pod/alb-jiwoo.yaml
+        run: |
+          sudo su
+          kubectl apply -f /root/k8s/pod/alb-jiwoo.yaml
