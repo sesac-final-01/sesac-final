@@ -18,11 +18,6 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: pwd1
-      run: |
-        pwd
-        ls -al
-
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
@@ -43,4 +38,4 @@ jobs:
     - name: Run tests
       run: |
         cd final_project
-        python manage.py test runserver
+        python manage.py test runserver --settings=final_project.settings.local
