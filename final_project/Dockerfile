@@ -10,7 +10,7 @@ COPY requirements.txt .
 
 # 필요한 패키지 설치
 RUN apk add --no-cache gcc musl-dev libffi-dev openssl-dev mariadb-dev && \
-    pip install --no-cache-dir -r fianl_project/requirements.txt
+    pip install --no-cache-dir -r requirements.txt
 
 
 # Python 패키지 설치
