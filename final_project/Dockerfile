@@ -6,7 +6,7 @@ WORKDIR final_project
 
 
 # 필요한 파일 복사
-COPY requirements.txt .
+COPY requirements.txt final_project
 
 # 필요한 패키지 설치
 RUN apk add --no-cache gcc musl-dev libffi-dev openssl-dev mariadb-dev && \
@@ -19,7 +19,7 @@ RUN python3 -m pip install --upgrade pip setuptools && \
 
 
 # 소스 코드 복사
-COPY . .
+COPY final_project/* final_project
 
 # 컨테이너에서 실행할 명령 설정
 CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000", "--settings=final_project.settings.prod"]
