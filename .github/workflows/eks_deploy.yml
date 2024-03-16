@@ -5,6 +5,7 @@ on:
     branches:
       - main
     paths:
+      - '.github/workflows/eks_deploy.yml'
       - 'final_project/**'
       - '!final_project/templates/**'
       - '!final_project/templates_local/**'

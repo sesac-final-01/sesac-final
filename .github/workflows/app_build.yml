@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - '.github/workflows/app_build.yaml'
+      - '.github/workflows/app_build.yml'
       - 'final_project/**'
       - '!final_project/templates/**'
       - '!final_project/templates_local/**'
