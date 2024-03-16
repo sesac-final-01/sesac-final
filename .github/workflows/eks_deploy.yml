@@ -49,10 +49,17 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_TR }}
           aws-region: ap-northeast-2
 
+
+    - name: Download kubectl
+      run: |
+        sudo apt-get update && sudo apt-get install -y apt-transport-https
+        curl -LO "https://dl.k8s.io/release/v1.29.1/bin/linux/amd64/kubectl"
+        sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+
       # Kubernetes 구성 설정
       - name: Configure Kubernetes
         run: aws eks --region ap-northeast-2 update-kubeconfig --name sesac-eks-cls
 
       # Kubernetes에 배포
       - name: Deploy to Kubernetes
-        run: kubectl apply -f final_project/alb.yaml
+        run: sudo kubectl apply -f final_project/alb.yaml
