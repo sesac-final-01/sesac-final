@@ -18,6 +18,12 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
+
+      - name: List files in current directory
+        run: |
+          ls
+          ls final_project/
+
       # .env 파일 생성
       - name: Create .env file
         run: |
@@ -29,7 +35,9 @@ jobs:
           echo "DB_PORT=${{ secrets.DB_PORT }}" >> final_project/.env
 
       - name: List files in current directory
-        run: ls
+        run: |
+          ls
+          ls final_project/
 
       # Docker 이미지 빌드
       - name: Build Docker Image
