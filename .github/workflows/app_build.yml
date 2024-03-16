@@ -18,6 +18,11 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
+    - name: pwd1
+      run: |
+        pwd
+        ls -al
+
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
@@ -30,13 +35,20 @@ jobs:
 
     # .env 파일 생성
     - name: Create .env file
-      run:
-        echo "DJANGO_SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}" > final_project/.env
+      run: |
+        cd final_project
+        touch .env
+        echo "DJANGO_SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}" >> final_project/.env
         echo "DB_HOST=${{ secrets.DB_HOST }}" >> final_project/.env
         echo "DB_NAME=${{ secrets.DB_NAME }}" >> final_project/.env
         echo "DB_USER=${{ secrets.DB_USER }}" >> final_project/.env
         echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" final_project/.env
         echo "DB_PORT=${{ secrets.DB_PORT }}" >> final_project/.env
+
+    - name: pwd
+      run: |
+        pwd
+        ls -al
 
     - name: Run database migrations
       run: |
@@ -45,4 +57,4 @@ jobs:
 
     - name: Run tests
       run: |
-        python final_project/manage.py test runserver 0.0.0.0:8000 --settings=final_project.settings.prod
+        python final_projct/manage.py test runserver 0.0.0.0:8000 --settings=final_project.settings.prod
