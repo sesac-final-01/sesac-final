@@ -1,10 +1,12 @@
 from .base import *
-
+import dotenv
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
+
+dotenv.read_dotenv(os.path.join(BASE_DIR, '.env'))
 
 DATABASES = {
     'default': {
