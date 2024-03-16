@@ -22,7 +22,6 @@ jobs:
       - name: List files in current directory
         run: |
           ls
-          ls final_project/
 
       # .env 파일 생성
       - name: Create .env file
@@ -36,7 +35,6 @@ jobs:
 
       - name: List files in current directory
         run: |
-          ls
           ls final_project/
 
       # Docker 이미지 빌드
