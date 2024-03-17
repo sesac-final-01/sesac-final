@@ -97,9 +97,13 @@ jobs:
         run: |
           aws eks --region ap-northeast-2 update-kubeconfig --name sesac-eks-cls --kubeconfig ~/.kube/config
 
-      # Kubernetes에 배포
-      - name: Deploy to Kubernetes
-        run: |
-          pwd
-          ls -al
-          kubectl apply -f final_project/alb.yaml
+      # deploy job 내부의 steps에 추가될 내용
+      - name: Rolling Update Deployment
+        run: kubectl set image deployment/my-deployment my-container=jiwooum/sugangsite:latest --record
+
+#      # Kubernetes에 배포
+#      - name: Deploy to Kubernetes
+#        run: |
+#          pwd
+#          ls -al
+#          kubectl apply -f final_project/alb.yaml
