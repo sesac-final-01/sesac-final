@@ -14,14 +14,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.10.6
+#    steps:
+#    - name: Checkout repository
+#      uses: actions/checkout@v2
+#
+#    - name: Set up Python
+#      uses: actions/setup-python@v2
+#      with:
+#        python-version: 3.10.6
 
       # aws configure
     - name: Configure AWS Credentials
@@ -48,16 +48,18 @@ jobs:
       run: |
         cd final_project
         ls -al
+        sudo apt-get update
+        sudo apt-get install python3-pip -y
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
     - name: Run migrate
       run: |
         cd final_project
-        python manage.py makemigrations --settings=final_project.settings.prod
-        python manage.py migrate --settings=final_project.settings.prod
+        python3 manage.py makemigrations --settings=final_project.settings.prod
+        python3 manage.py migrate --settings=final_project.settings.prod
 
     - name: Run tests
       run: |
         cd final_project
-        python manage.py runserver --settings=final_project.settings.prod
+        python3 manage.py runserver 0.0.0.0/0 --settings=final_project.settings.prod
