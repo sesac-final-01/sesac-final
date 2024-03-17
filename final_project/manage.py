@@ -22,5 +22,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-# 새롭게 반영될 내용

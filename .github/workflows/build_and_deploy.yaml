@@ -15,63 +15,63 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-      # aws configure
-    - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v2
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ap-northeast-2
+        # aws configure
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
 
-      # .env 파일 생성
-    - name: Create .env file
-      run: |
-        cd final_project
-        touch .env
-        echo "DJANGO_SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}" >> .env
-        echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
-        echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
-        echo "DB_USER=${{ secrets.DB_USER }}" >> .env
-        echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
-        echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
-        cat .env
+        # .env 파일 생성
+      - name: Create .env file
+        run: |
+          cd final_project
+          touch .env
+          echo "DJANGO_SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}" >> .env
+          echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
+          echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
+          echo "DB_USER=${{ secrets.DB_USER }}" >> .env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+          echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
+          cat .env
 
-    - name: Install dependencies
-      run: |
-        cd final_project
-        sudo apt-get update
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+      - name: Install dependencies
+        run: |
+          cd final_project
+          sudo apt-get update
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-    - name: Run migrate
-      run: |
-        cd final_project
-        python manage.py makemigrations --settings=final_project.settings.prod
-        python manage.py migrate --settings=final_project.settings.prod
-    - name: Run tests
-      run: |
-        cd final_project
-        ls -al
-        python manage.py runserver 0.0.0.0:8000 --settings=final_project.settings.prod --noreload &
+      - name: Run migrate
+        run: |
+          cd final_project
+          python manage.py makemigrations --settings=final_project.settings.prod
+          python manage.py migrate --settings=final_project.settings.prod
+      - name: Run tests
+        run: |
+          cd final_project
+          ls -al
+          python manage.py runserver 0.0.0.0:8000 --settings=final_project.settings.prod --noreload &
 
-      # Docker 이미지 빌드
-    - name: Build Docker Image
-      run: |
-        cd final_project
-        pwd
-        ls -al
-        docker build -t jiwooum/sugangsite:latest  .
+        # Docker 이미지 빌드
+      - name: Build Docker Image
+        run: |
+          cd final_project
+          pwd
+          ls -al
+          docker build -t jiwooum/sugangsite:latest  .
 
-      # Docker Hub 로그인
-    - name: Login to Docker Hub
-      run: docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
+        # Docker Hub 로그인
+      - name: Login to Docker Hub
+        run: docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
 
-      # Docker 이미지를 Docker Hub로 push
-    - name: Push Docker Image to Docker Hub
-      run: docker push jiwooum/sugangsite:latest
+        # Docker 이미지를 Docker Hub로 push
+      - name: Push Docker Image to Docker Hub
+        run: docker push jiwooum/sugangsite:latest
 
   deploy:
     runs-on: ubuntu-latest
@@ -84,7 +84,7 @@ jobs:
       - name: user change
         run: sudo su -
 
-    # aws configure
+      # aws configure
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -96,13 +96,14 @@ jobs:
       - name: Configure Kubernetes
         run: |
           aws eks --region ap-northeast-2 update-kubeconfig --name sesac-eks-cls --kubeconfig ~/.kube/config
-          
+
       # Deploy to Kubernetes...
       - name: Scale up Deployment
         run: |
           kubectl scale deployment project-app --replicas=4
 
-      - name: Drain Old Pods
+      - name: Delete Old Pods
         run: |
-          kubectl drain ip-10-130-69-18.ap-northeast-2.compute.internal --ignore-daemonsets
-          kubectl drain ip-10-130-109-182.ap-northeast-2.compute.internal --ignore-daemonsets
+          kubectl get pods --sort-by=.metadata.creationTimestamp -o json | \
+          jq '.items[0:2] | .[] | .metadata.name' | \
+          xargs -I {} kubectl delete pod {}
