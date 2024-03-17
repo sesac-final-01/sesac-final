@@ -6,6 +6,7 @@ WORKDIR /final_project
 
 # 필요한 파일 복사
 COPY requirements.txt /final_project/
+COPY .env /final_project/
 
 # 필요한 패키지 설치
 RUN apk add --no-cache gcc musl-dev libffi-dev openssl-dev mariadb-dev && \
