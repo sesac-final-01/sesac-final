@@ -38,11 +38,11 @@ jobs:
 
     - name: Install dependencies
       run: |
-        cd final_project
-        python -m pip install --upgrade pip --settings=final_project.settings.prod
-        pip install -r final_project/requirements.txt --settings=final_project.settings.prod
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
 
     - name: Run tests
       run: |
         cd final_project
+        ls -al
         python manage.py runserver --settings=final_project.settings.prod
