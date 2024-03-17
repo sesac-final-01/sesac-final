@@ -78,7 +78,14 @@ jobs:
     needs: build
 
     steps:
-      - name: Configure AWS Credentials with TR_IAM
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: user change
+        run: sudo su -
+
+    # aws configure
+      - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_TR }}
