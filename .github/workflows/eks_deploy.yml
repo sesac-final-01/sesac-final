@@ -18,6 +18,17 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
+      - name: user change
+        run: sudo su -
+
+    # aws configure
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_TR }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_TR }}
+          aws-region: ap-northeast-2
+
       # .env 파일 생성
       - name: Create .env file
         run: |
@@ -46,21 +57,14 @@ jobs:
       - name: Push Docker Image to Docker Hub
         run: docker push jiwooum/sugangsite:latest
 
-    # aws configure
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_TR }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_TR }}
-          aws-region: ap-northeast-2
-
       # Kubernetes 구성 설정
       - name: Configure Kubernetes
         run: |
-          aws eks --region ap-northeast-2 update-kubeconfig --name sesac-eks-cls --kubeconfig ~/.kube/config
+          aws eks --region ap-northeast-2 update-kubeconfig --name sesac-eks-cls --kubeconfig /root/.kube/config
 
       # Kubernetes에 배포
       - name: Deploy to Kubernetes
         run: |
+          pwd
           ls -al
-          kubectl apply -f final_project/alb.yaml --validate=false
+          kubectl apply -f final_project/alb.yaml
