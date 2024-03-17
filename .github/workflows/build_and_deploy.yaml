@@ -99,7 +99,7 @@ jobs:
 
       # deploy job 내부의 steps에 추가될 내용
       - name: Rolling Update Deployment
-        run: kubectl set image deployment/my-deployment my-container=jiwooum/sugangsite:latest --record
+        run: kubectl set image deployment/project-app project=jiwooum/sugangsite:latest --record
 
 #      # Kubernetes에 배포
 #      - name: Deploy to Kubernetes
