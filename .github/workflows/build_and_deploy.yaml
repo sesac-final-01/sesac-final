@@ -100,4 +100,9 @@ jobs:
       # Deploy to Kubernetes...
       - name: Scale up Deployment
         run: |
-          kubectl scale deployment project-app --replicas=2
+          kubectl scale deployment project-app --replicas=4
+
+      - name: Drain Old Pods
+        run: |
+          kubectl drain ip-10-130-69-18.ap-northeast-2.compute.internal --ignore-daemonsets
+          kubectl drain ip-10-130-109-182.ap-northeast-2.compute.internal --ignore-daemonsets
