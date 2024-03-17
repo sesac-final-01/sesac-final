@@ -31,4 +31,4 @@ jobs:
     - name: Run tests
       run: |
         cd final_project
-        python manage.py runserver
+        python manage.py runserver --settings=final_project.settings.prod
