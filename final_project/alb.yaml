@@ -17,7 +17,7 @@ metadata:
   labels:
     app: sesac
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       app: sesac
