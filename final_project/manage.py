@@ -23,4 +23,4 @@ def main():
 if __name__ == '__main__':
     main()
 
-# CI/CD test
+# 새롭게 반영될 내용
