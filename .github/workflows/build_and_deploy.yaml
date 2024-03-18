@@ -101,10 +101,8 @@ jobs:
       - name: Scale up Deployment
         run: |
           kubectl scale deployment project-app --replicas=4
-          kubectl apply -f final_project/alb.yaml
 
       # Deploy to Kubernetes...
       - name: Scale down Deployment
         run: |
           kubectl scale deployment project-app --replicas=2
-          kubectl apply -f final_project/alb.yaml
