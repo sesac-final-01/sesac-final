@@ -18,7 +18,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-        # aws configure
+        # aws 자격 증명
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -39,6 +39,7 @@ jobs:
           echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
           cat .env
 
+        # 구동에 필요한 모든 패키지 설치
       - name: Install dependencies
         run: |
           cd final_project
@@ -46,6 +47,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+        # 구동 테스트
       - name: Run migrate
         run: |
           cd final_project
@@ -84,7 +86,7 @@ jobs:
       - name: user change
         run: sudo su -
 
-      # aws configure
+      # aws 자격증명 - EKS 노드그룹 생성자 권한 필요
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -98,15 +100,11 @@ jobs:
           aws eks --region ap-northeast-2 update-kubeconfig --name sesac-eks-cls --kubeconfig ~/.kube/config
 
 
-      # Deploy to Kubernetes...
+      # EKS 배포 - scale doewn & scale up
       - name: Scale down Deployment
         run: |
           kubectl scale deployment project-app --replicas=0
           
-
-      # Deploy to Kubernetes...
       - name: Scale up Deployment
         run: |
           kubectl scale deployment project-app --replicas=2
-
-
