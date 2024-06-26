@@ -7,6 +7,8 @@ on:
     paths:
       - '.github/workflows/build_and_deploy.yaml'
       - 'final_project/**'
+      - '!final_project/accounts/migrations/**'
+      - '!final_project/lectures/migrations/**'
       - '!final_project/templates/**'
       - '!final_project/templates_local/**'
 
@@ -53,6 +55,7 @@ jobs:
           cd final_project
           python manage.py makemigrations --settings=final_project.settings.prod
           python manage.py migrate --settings=final_project.settings.prod
+
       - name: Run tests
         run: |
           cd final_project
