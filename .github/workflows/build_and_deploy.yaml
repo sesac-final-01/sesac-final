@@ -104,6 +104,16 @@ jobs:
         run: |
           kubectl apply -f service.yaml || echo "Service already exists"
 
+      # EKS 배포 - scale doewn & scale up
+      - name: Scale down Deployment
+        run: |
+          kubectl scale deployment project-app --replicas=0
+
+      - name: Scale up Deployment
+        run: |
+          kubectl scale deployment project-app --replicas=2
+
+
 #    # 블루-그립 배포 전략 적용
 #     - name: Blue-Green Deployment
 #        run: |
@@ -122,12 +132,3 @@ jobs:
 #          kubectl scale deployment/${ACTIVE_COLOR}-deployment --replicas=0
 #
 #          kubectl rollout status deployment/${ACTIVE_COLOR}-deployment
-
-      # EKS 배포 - scale doewn & scale up
-      - name: Scale down Deployment
-        run: |
-          kubectl scale deployment project-app --replicas=0
-
-      - name: Scale up Deployment
-        run: |
-          kubectl scale deployment project-app --replicas=2
