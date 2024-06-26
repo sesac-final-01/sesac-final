@@ -75,43 +75,43 @@ jobs:
       - name: Push Docker Image to Docker Hub
         run: docker push jiwooum/sugangsite:latest
 
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: user change
-        run: sudo su -
-
-      # aws 자격증명 - EKS 노드그룹 생성자 권한 필요
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-northeast-2
-
-      # Kubernetes 구성 설정
-      - name: Configure Kubernetes
-        run: |
-          aws eks --region ap-northeast-2 update-kubeconfig --name sesac-eks-cls --kubeconfig ~/.kube/config
-
-    # LB 서비스 생성(이미 있는 경우 생략)
-     - name: Create Service if not exists
-        run: |
-          kubectl apply -f service.yaml || echo "Service already exists"
-
-      # EKS 배포 - scale doewn & scale up
-      - name: Scale down Deployment
-        run: |
-          kubectl scale deployment project-app --replicas=0
-
-      - name: Scale up Deployment
-        run: |
-          kubectl scale deployment project-app --replicas=2
+#  deploy:
+#    runs-on: ubuntu-latest
+#    needs: build
+#
+#    steps:
+#      - name: Checkout Repository
+#        uses: actions/checkout@v2
+#
+#      - name: user change
+#        run: sudo su -
+#
+#      # aws 자격증명 - EKS 노드그룹 생성자 권한 필요
+#      - name: Configure AWS Credentials
+#        uses: aws-actions/configure-aws-credentials@v2
+#        with:
+#          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#          aws-region: ap-northeast-2
+#
+#      # Kubernetes 구성 설정
+#      - name: Configure Kubernetes
+#        run: |
+#          aws eks --region ap-northeast-2 update-kubeconfig --name sesac-eks-cls --kubeconfig ~/.kube/config
+#
+#    # LB 서비스 생성(이미 있는 경우 생략)
+#     - name: Create Service if not exists
+#        run: |
+#          kubectl apply -f service.yaml || echo "Service already exists"
+#
+#      # EKS 배포 - scale doewn & scale up
+#      - name: Scale down Deployment
+#        run: |
+#          kubectl scale deployment project-app --replicas=0
+#
+#      - name: Scale up Deployment
+#        run: |
+#          kubectl scale deployment project-app --replicas=2
 
 
 #    # 블루-그립 배포 전략 적용
